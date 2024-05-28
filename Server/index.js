@@ -9,6 +9,8 @@ let dbConnect=require('./dbConnect');
 const morgan=require('morgan');
 
 let authRouter=require('./routers/authRouter');
+
+let postRouter=require('./routers/postRouter')
 dbConnect();
 
 
@@ -23,6 +25,8 @@ app.use(express.json());
 app.use(morgan('common'))
 
 app.use('/auth',authRouter)
+
+app.use('/posts',postRouter);
 
 const PORT=process.env.PORT||4000;
 

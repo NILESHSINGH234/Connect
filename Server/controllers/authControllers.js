@@ -1,5 +1,6 @@
 const User=require('../model/User')
 const bcrypt = require("bcrypt");
+const jwt=require('jsonwebtoken');
 const signupController=async(req,res)=>{
     try{
 const {name,email,password}=req.body;
@@ -35,6 +36,8 @@ user
 }
 
 
+
+
 const loginController=async(req,res)=>{
     try{
         const {email,password}=req.body;
@@ -57,10 +60,23 @@ if(!matched){
     return res.status(403).send('incorrect password')
 }
 
-return res.json({user})
+const accessToken=generateAccesToken({_id:user._id,email:user._email});
+
+return res.json({accessToken})
     }catch(e){
         console.log(e)
     }
+}
+
+
+const generateAccesToken=(data)=>{
+
+    try{
+       return jwt.sign(data,'nilesh',{expiresIn:'60s'}); 
+    }catch(e){
+        console.log(e)
+    }
+
 }
 
 module.exports={signupController,loginController}
