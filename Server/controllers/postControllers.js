@@ -1,7 +1,8 @@
 
 
 let getAllpostController=async(req,res)=>{
-    return res.send('these are all posts');
+    console.log(req._id);
+    return res.send(req._id);
 }
 
 module.exports={getAllpostController};

@@ -72,7 +72,7 @@ return res.json({accessToken})
 const generateAccesToken=(data)=>{
 
     try{
-       return jwt.sign(data,'nilesh',{expiresIn:'60s'}); 
+       return jwt.sign(data,process.env.ACCESS_TOKEN_PRIVATE_KEY,{expiresIn:'60s'}); 
     }catch(e){
         console.log(e)
     }
