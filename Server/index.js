@@ -4,6 +4,11 @@ let dotenv=require('dotenv');
 
 dotenv.config('./.env');
 
+let dbConnect=require('./dbConnect');
+
+
+dbConnect();
+
 
 
 let app=express();
