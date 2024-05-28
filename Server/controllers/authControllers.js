@@ -1,5 +1,5 @@
 const User=require('../model/User')
-
+const bcrypt = require("bcrypt");
 const signupController=async(req,res)=>{
     try{
 const {name,email,password}=req.body;
@@ -37,7 +37,27 @@ user
 
 const loginController=async(req,res)=>{
     try{
-res.send('signu')
+        const {email,password}=req.body;
+
+if (!email || !password) {
+    // return res.status(400).send("All fields are required");
+    return res.status(400).send("All fields are required");
+}
+
+
+const user = await User.findOne({ email });
+if (!user) {
+    // return res.status(409).send("User is already registered");
+    return res.status(404).send( "User Not Found");
+}
+
+const matched=await bcrypt.compare(password,user.password);
+
+if(!matched){
+    return res.status(403).send('incorrect password')
+}
+
+return res.json({user})
     }catch(e){
         console.log(e)
     }
