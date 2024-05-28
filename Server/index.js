@@ -1,39 +1,33 @@
-let express=require('express');
+const express = require('express');
+const dotenv = require('dotenv');
+const dbConnect = require('./dbConnect');
+const cors = require('cors');
+const morgan = require('morgan');
+const authRouter = require('./routers/authRouter');
+const postRouter = require('./routers/postRouter');
 
-let dotenv=require('dotenv');
+// Load environment variables from .env file
+dotenv.config();
 
-dotenv.config('./.env');
-
-let dbConnect=require('./dbConnect');
-
-const morgan=require('morgan');
-
-let authRouter=require('./routers/authRouter');
-
-let postRouter=require('./routers/postRouter')
+// Initialize database connection
 dbConnect();
 
+const app = express();
 
-
-let app=express();
-
-
-//middlewares
-
+// Middleware
 app.use(express.json());
+app.use(morgan('common'));
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
 
-app.use(morgan('common'))
+// Route Handlers
+app.use('/auth', authRouter);
+app.use('/posts', postRouter);
 
-app.use('/auth',authRouter)
-
-app.use('/posts',postRouter);
-
-const PORT=process.env.PORT||4000;
-
-app.listen(PORT,()=>{
-    console.log("app is started")
-})
-
-
-
-
+// Start the server
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+    console.log(`App is started on port ${PORT}`);
+});
