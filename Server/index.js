@@ -6,6 +6,7 @@ dotenv.config('./.env');
 
 let dbConnect=require('./dbConnect');
 
+const morgan=require('morgan');
 
 let authRouter=require('./routers/authRouter');
 dbConnect();
@@ -13,6 +14,13 @@ dbConnect();
 
 
 let app=express();
+
+
+//middlewares
+
+app.use(express.json());
+
+app.use(morgan('common'))
 
 app.use('/auth',authRouter)
 
